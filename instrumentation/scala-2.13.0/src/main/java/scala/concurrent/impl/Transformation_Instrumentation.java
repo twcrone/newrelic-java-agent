@@ -35,6 +35,7 @@ public class Transformation_Instrumentation<T>  {
      * It plays similar role to the 2.12 setter for "value" on the old CallbackRunnable
      */
     public final Promise.Transformation submitWithValue(final Try<T> resolved) {
+        System.out.println("XXXXXXX !!! Hello");
         AgentBridge.TokenAndRefCount tokenAndRefCount = AgentBridge.activeToken.get();
         if (tokenAndRefCount == null) {
             Transaction tx = AgentBridge.getAgent().getTransaction(false);
@@ -51,6 +52,7 @@ public class Transformation_Instrumentation<T>  {
 
     @Trace(excludeFromTransactionTrace = true)
     public void run() {
+        System.out.println("YYYYYYYY !!! World");
         Segment segment = null;
         boolean remove = false;
 
