@@ -19,7 +19,7 @@ on:
 jobs:
   java-instrumentation-tests:
     name: Java ${{ matrix.java-version }} Instrumentation Tests
-    timeout-minutes: 30
+    timeout-minutes: 60
     # needs: install-all-java
     runs-on: ubuntu-latest
     env:
@@ -172,6 +172,8 @@ jobs:
         exclude:
           - java-version: 11
             scala: 2.10
+          - java-version: 11
+            scala: 2.11
     steps:
       - uses: actions/checkout@v2
         with:
