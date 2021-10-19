@@ -5,6 +5,7 @@ on:
     branches-ignore:
       - '**WIP**'
       - 'main'
+      - 'tcrone/fix-scala-gha-matrix-tests'
 
 jobs:
   java-instrumentation-tests:
