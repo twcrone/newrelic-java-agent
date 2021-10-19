@@ -142,7 +142,7 @@ jobs:
           JAVA_HOME: ${{ env.ORG_GRADLE_PROJECT_jdk8 }}
         run: |
           # Below per https://github.com/newrelic/newrelic-java-agent/pull/451, adding the matrix value to Ptest
-          ./gradlew --console=plain --parallel clean :instrumentation:test -Ptest${{ matrix.java-version }} -PnoScala --continue
+          ./gradlew --console=plain clean :instrumentation:test -Ptest${{ matrix.java-version }} -PnoScala --continue
 
       # Capture HTML build result in artifacts
       - name: Capture build reports
