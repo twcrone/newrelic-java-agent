@@ -80,20 +80,20 @@ jobs:
       - name: Check environmental variables
         run: printenv | sort -f
 
-      # Restore the gradle cache
-      - name: Restore the gradle caches
-        uses: actions/cache@v2.1.6
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          # The docs say to use hashfiles, but gradle itself is smart enough to
-          # re-download dependencies if it couldn't resolve them.
-          # Because our gradle cache is _so big_, I think a 90% cache is far
-          # better than a 0% cache.
-          key: ${{ runner.os }}-gradle
-          restore-keys: |
-            ${{ runner.os }}-gradle
+#      # Restore the gradle cache
+#      - name: Restore the gradle caches
+#        uses: actions/cache@v2.1.6
+#        with:
+#          path: |
+#            ~/.gradle/caches
+#            ~/.gradle/wrapper
+#          # The docs say to use hashfiles, but gradle itself is smart enough to
+#          # re-download dependencies if it couldn't resolve them.
+#          # Because our gradle cache is _so big_, I think a 90% cache is far
+#          # better than a 0% cache.
+#          key: ${{ runner.os }}-gradle
+#          restore-keys: |
+#            ${{ runner.os }}-gradle
 
       ## AWS jars - plan to cache
       - name: Configure AWS Credentials
@@ -212,20 +212,20 @@ jobs:
       - name: Check environmental variables
         run: printenv | sort -f
 
-      # Restore the gradle cache
-      - name: Restore the gradle caches
-        uses: actions/cache@v2.1.6
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          # The docs say to use hashfiles, but gradle itself is smart enough to
-          # re-download dependencies if it couldn't resolve them.
-          # Because our gradle cache is _so big_, I think a 90% cache is far
-          # better than a 0% cache.
-          key: ${{ runner.os }}-gradle
-          restore-keys: |
-            ${{ runner.os }}-gradle
+#      # Restore the gradle cache
+#      - name: Restore the gradle caches
+#        uses: actions/cache@v2.1.6
+#        with:
+#          path: |
+#            ~/.gradle/caches
+#            ~/.gradle/wrapper
+#          # The docs say to use hashfiles, but gradle itself is smart enough to
+#          # re-download dependencies if it couldn't resolve them.
+#          # Because our gradle cache is _so big_, I think a 90% cache is far
+#          # better than a 0% cache.
+#          key: ${{ runner.os }}-gradle
+#          restore-keys: |
+#            ${{ runner.os }}-gradle
 
       ## AWS jars - plan to cache
       # secrets are available in the interface, but may NOT be edited.
