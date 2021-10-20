@@ -7,7 +7,7 @@ on:
     types: [assigned, opened, synchronize, reopened, ready_for_review] ## Types TBD
   push:
     # branches: ['**']
-    branches: [tcrone/fix-scala-gha-matrix-tests]
+    branches: [main]
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
     inputs:
@@ -43,6 +43,7 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: 8
+          cache: 'gradle'
 
       # Save new JDK variable
       - name: Save JAVA_HOME as JDK8 for later usage
@@ -110,16 +111,11 @@ jobs:
           rm gradle.properties
           mv gradle.properties.gha gradle.properties
 
-      # Run the build with Gradle caching action.
-      - uses: burrunan/gradle-cache-action@v1
-        name: Run instrumentation tests for Java ${{ matrix.java-version }} as defined in the matrix
+      # Run the build
+      - name: Run instrumentation tests for Java ${{ matrix.java-version }} as defined in the matrix
         env:
           JAVA_HOME: ${{ env.ORG_GRADLE_PROJECT_jdk8 }}
-        with:
-          job-id: jdk8 #${{ matrix.java-version }}
-          read-only: ${{ github.ref != 'refs/heads/main' }}
-          arguments: --console=plain clean :instrumentation:test -Ptest${{ matrix.java-version }} -PnoScala --continue
-          gradle-version: wrapper
+        run: ./gradlew --console=plain clean :instrumentation:test -Ptest${{ matrix.java-version }} -PnoScala --continue
 
       # Capture HTML build result in artifacts
       - name: Capture build reports
@@ -132,7 +128,7 @@ jobs:
 
   scala-instrumentation-tests:
     name: Scala ${{ matrix.scala }} on Java ${{ matrix.java-version }} Instrumentation Tests
-    timeout-minutes: 120
+    timeout-minutes: 30
     # needs: install-all-java
     runs-on: ubuntu-latest
     env:
@@ -162,6 +158,7 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: 8
+          cache: 'gradle'
 
       # Save new JDK variable
       - name: Save JAVA_HOME as JDK8 for later usage
@@ -216,16 +213,11 @@ jobs:
           rm gradle.properties
           mv gradle.properties.gha gradle.properties
 
-      # Run the build with Gradle caching action.
-      - uses: burrunan/gradle-cache-action@v1
-        name: Run instrumentation tests for Java ${{ matrix.java-version }} and scala ${{ matrix.scala }}
+      # Run the build
+      - name: Run instrumentation tests for Java ${{ matrix.java-version }} and scala ${{ matrix.scala }}
         env:
           JAVA_HOME: ${{ env.ORG_GRADLE_PROJECT_jdk8 }}
-        with:
-          job-id: jdk8 #${{ matrix.java-version }}scala${{ matrix.scala }}
-          read-only: ${{ github.ref != 'refs/heads/main' }}
-          arguments: --console=plain --parallel clean :instrumentation:test -Ptest${{ matrix.java-version }} -PnoInstrumentation -PnoScala -Pscala-${{ matrix.scala }} --continue
-          gradle-version: wrapper
+        run: ./gradlew --console=plain --parallel clean :instrumentation:test -Ptest${{ matrix.java-version }} -PnoInstrumentation -PnoScala -Pscala-${{ matrix.scala }} --continue
 
       # Capture HTML build result in artifacts
       - name: Capture build reports
