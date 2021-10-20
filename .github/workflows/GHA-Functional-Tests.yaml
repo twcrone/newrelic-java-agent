@@ -42,6 +42,7 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: 8
+          cache: 'gradle'
 
       # Save new JDK variable
       - name: Save JAVA_HOME as JDK8 for later usage
@@ -79,22 +80,6 @@ jobs:
       - name: Check environmental variables
         run: printenv | sort -f
 
-      # Restore the gradle cache
-      - name: Restore the gradle caches
-        uses: actions/cache@v2.1.6
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          # The docs say to use hashfiles, but gradle itself is smart enough to
-          # re-download dependencies if it couldn't resolve them.
-          # Because our gradle cache is _so big_, I think a 90% cache is far
-          # better than a 0% cache.
-          key: ${{ runner.os }}-gradle
-          restore-keys: |
-            ${{ runner.os }}-gradle
-
-
       # GHA run functional tests
 
       # Rewrite gradle.properties
@@ -106,17 +91,6 @@ jobs:
           cat gradle.properties.gha
           rm gradle.properties
           mv gradle.properties.gha gradle.properties
-
-      # IS THIS IMPACTING TESTS?
-      - name: Build newrelicJar
-        env:
-          JAVA_HOME: ${{ env.ORG_GRADLE_PROJECT_jdk8 }}
-        run: |
-          # echo "JAVA_HOME=${ORG_GRADLE_PROJECT_jdk8}" >> $GITHUB_ENV
-          echo "REVIEW ANY NEW ITEMS IN WORKSPACE"
-          ls -la
-          ./gradlew clean jar --parallel
-          ls -la newrelic-agent/build/
 
       # Run the build.
       - name: Run functional tests against version defined in matrix

@@ -6,8 +6,7 @@ on:
     branches: [ main ] ## branches TBD
     types: [assigned, opened, synchronize, reopened, ready_for_review] ## Types TBD
   push:
-    # branches: ['**']
-    branches: [main]
+    branches-ignore: ['**WIP**']
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
     inputs:
